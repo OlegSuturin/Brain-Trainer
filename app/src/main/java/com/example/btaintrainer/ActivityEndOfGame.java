@@ -17,7 +17,7 @@ public class ActivityEndOfGame extends AppCompatActivity {
         textViewScore = findViewById(R.id.textViewScore);
 
         Intent intent = getIntent();
-        if (intent.hasExtra("scorecurrent")){
+        if (intent!=null && intent.hasExtra("scorecurrent")){
             int scorecurrent, record;
 
             scorecurrent = intent.getIntExtra("scorecurrent", 0);

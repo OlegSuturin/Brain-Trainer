@@ -1,9 +1,11 @@
 package com.example.btaintrainer;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
@@ -26,11 +28,16 @@ public class MainActivity extends AppCompatActivity {
 
     private int valueA, valueB, valueResult;
     private int randomButtonRightAnswer;
-
-    private  int scoreIndividual, scoreIndividualAll;
+    private final int MIN = -100, MAX = 100;
+    private int scoreIndividual, scoreIndividualAll;
     private int scoreRecord;
-    private int second;
 
+    private boolean gameOver = false;
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,28 +57,35 @@ public class MainActivity extends AppCompatActivity {
         arrayTextView.add(textViewAnswer2);
         arrayTextView.add(textViewAnswer3);
 
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        scoreRecord =  preferences.getInt("score", 0);
-        Toast.makeText(MainActivity.this, "Действующий рекорд " +scoreRecord, Toast.LENGTH_SHORT).show();
+        scoreRecord = preferences.getInt("score", 0);
+        Toast.makeText(MainActivity.this, "Действующий рекорд " + scoreRecord, Toast.LENGTH_SHORT).show();
 
 
-        scoreIndividualAll = scoreIndividual =0;
-        textViewScore.setText(scoreIndividual + "/" + scoreIndividualAll);
+        scoreIndividualAll = scoreIndividual = 0;
+        // textViewScore.setText(scoreIndividual + "/" + scoreIndividualAll);
         setPlay();
 
 
-        CountDownTimer timer = new CountDownTimer(20000, 1000) {
+        CountDownTimer timer = new CountDownTimer(90000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
 
 
-                second = (int) (millisUntilFinished / 1000);
-                textViewTimer.setText(Integer.toString(second));
+                int second = (int) (millisUntilFinished / 1000);
+                textViewTimer.setText(getTime(millisUntilFinished));
+                if (second <= 10) {
+                    textViewTimer.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+                }
+                else
+                    textViewTimer.setTextColor(getResources().getColor(android.R.color.black));
             }
 
             @Override
             public void onFinish() {
-                if (scoreIndividual > scoreRecord){
+                gameOver = true;
+                if (scoreIndividual > scoreRecord) {
                     preferences.edit().putInt("score", scoreIndividual).apply();
                     //Toast.makeText(MainActivity.this, "Новый рекорд " +scoreIndividual, Toast.LENGTH_SHORT).show();
 
@@ -87,9 +101,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void setPlay(){                    // установкаа примера на экран
-        valueA = randomFunction(-100, 100);
-        valueB = randomFunction(-100, 100);
+    public void setPlay() {                    // установкаа примера на экран
+
+        valueA = randomFunction(MIN, MAX);
+        valueB = randomFunction(MIN, MAX);
         valueResult = valueA + valueB;
         if (valueB >= 0) {
             textViewExample.setText("" + valueA + " +" + valueB + " =");
@@ -97,21 +112,27 @@ public class MainActivity extends AppCompatActivity {
             textViewExample.setText("" + valueA + " " + valueB + " =");
         }
 
-        randomButtonRightAnswer =  (int) (Math.random() * arrayTextView.size());   //установка правильного ответа в случайную кнопку, в остальные кн. -неправильные значения
+        randomButtonRightAnswer = (int) (Math.random() * arrayTextView.size());   //установка правильного ответа в случайную кнопку, в остальные кн. -неправильные значения
         //Toast.makeText(this, ""+randomButtonRightAnswer, Toast.LENGTH_SHORT).show();
+        int wrongInt = 0;
+        for (int i = 0; i < arrayTextView.size(); i++) {
+            if (i == randomButtonRightAnswer)
+                arrayTextView.get(i).setText(Integer.toString(valueResult));
+            else{
+                do {     //если случайно получилось, что неправильный ответ = правильному, повторить
+                    wrongInt = randomFunction(2 * MIN, 2 * MAX);
+                }while (wrongInt == valueResult);
+                arrayTextView.get(i).setText(Integer.toString(wrongInt));
+            }
 
-        for(int i=0; i< arrayTextView.size(); i++) {
-            if( i == randomButtonRightAnswer)
-                        arrayTextView.get(i).setText(Integer.toString(valueResult));
-            else
-                arrayTextView.get(i).setText(Integer.toString(randomFunction(-100, 100)));
         }
+        textViewScore.setText(scoreIndividual + "/" + scoreIndividualAll);
 
     }
 
 
     public void onClickAnswer(View view) {
-        if (second > 0) {
+        if (!gameOver) {
             scoreIndividualAll++;
             TextView textView = (TextView) view;
             String tag = textView.getTag().toString();
@@ -122,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Неправильный ответ!", Toast.LENGTH_SHORT).show();
             }
-            textViewScore.setText(scoreIndividual + "/" + scoreIndividualAll);
+
             setPlay();
         }
 
@@ -132,6 +153,14 @@ public class MainActivity extends AppCompatActivity {
 
         int result = (int) ((Math.random() * (b - a)) + a);
         return result;
+    }
+
+    public String getTime(long millis){  // перевод миллис в формат мин/секс
+        int seconds = (int) (millis/1000);
+        int minutes = seconds / 60;
+        seconds = seconds % 60;
+
+        return String.format("%02d:%02d", minutes, seconds);
     }
 
 }

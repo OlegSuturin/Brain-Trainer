@@ -10,9 +10,9 @@
         android:id="@+id/textViewTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_margin="16dp"
         android:textColor="@android:color/holo_orange_dark"
-        android:textSize="22sp"
+        android:textSize="@dimen/text_size_timer_score"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,8 +20,8 @@
         android:id="@+id/textViewScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
-        android:textSize="22sp"
+        android:layout_margin="16dp"
+        android:textSize="@dimen/text_size_timer_score"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,31 +30,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.70"/>
+        app:layout_constraintGuide_percent="0.70" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.85"/>
+        app:layout_constraintGuide_percent="0.85" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5"/>
+        app:layout_constraintGuide_percent="0.5" />
 
     <TextView
         android:id="@+id/textViewAnswer0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textSize="28sp"
-        android:textAlignment="center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/holo_blue_bright"
+        android:gravity="center"
         android:onClick="onClickAnswer"
         android:tag="0"
+        android:text="TextView"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_button_answer"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,12 +65,15 @@
 
     <TextView
         android:id="@+id/textViewAnswer1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textSize="28sp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/holo_orange_light"
+        android:gravity="center"
         android:onClick="onClickAnswer"
         android:tag="1"
+        android:text="TextView"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_button_answer"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
@@ -76,12 +81,15 @@
 
     <TextView
         android:id="@+id/textViewAnswer2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textSize="28sp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/holo_red_light"
+        android:gravity="center"
         android:onClick="onClickAnswer"
         android:tag="2"
+        android:text="TextView"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_button_answer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,12 +97,15 @@
 
     <TextView
         android:id="@+id/textViewAnswer3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textSize="28sp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/holo_green_light"
+        android:gravity="center"
         android:onClick="onClickAnswer"
         android:tag="3"
+        android:text="TextView"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_button_answer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
@@ -105,7 +116,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
-        android:textSize="48sp"
+        android:textSize="@dimen/text_size_example"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
